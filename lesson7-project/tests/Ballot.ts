@@ -142,58 +142,90 @@ describe("Ballot", () => {
   });
 
   describe("When the an attacker interact with the giveRightToVote function in the contract", function () {
-    // TODO
-    xit("should revert", async () => {
-      throw Error("Not implemented");
+    it("Should revert", async () => {
+      await expect(
+        ballotContract.connect(accounts[1]).giveRightToVote(accounts[2].address)
+      ).to.be.reverted;
     });
   });
 
   describe("When the an attacker interact with the vote function in the contract", function () {
     // TODO
-    xit("should revert", async () => {
+    xit("Should revert", async () => {
       throw Error("Not implemented");
     });
   });
 
   describe("When the an attacker interact with the delegate function in the contract", function () {
     // TODO
-    xit("should revert", async () => {
+    xit("Should revert", async () => {
       throw Error("Not implemented");
     });
   });
 
   describe("When someone interact with the winningProposal function before any votes are cast", function () {
     // TODO
-    xit("should return 0", async () => {
-      throw Error("Not implemented");
+    it("Should return 0", async () => {
+      expect(await ballotContract.winningProposal()).to.be.eq(0);
     });
   });
 
   describe("When someone interact with the winningProposal function after one vote is cast for the first proposal", function () {
-    // TODO
-    xit("should return 0", async () => {
-      throw Error("Not implemented");
+    beforeEach(async () => {
+      await ballotContract
+        .giveRightToVote(accounts[1].address)
+        .then((tx) => tx.wait());
+    });
+    it("Should return 1", async () => {
+      await ballotContract.connect(accounts[1]).vote(1);
+      expect(await ballotContract.winningProposal()).to.be.eq(1);
     });
   });
 
   describe("When someone interact with the winnerName function before any votes are cast", function () {
-    // TODO
-    xit("should return name of proposal 0", async () => {
-      throw Error("Not implemented");
+    it("Should return name of proposal 0", async () => {
+      expect(
+        ethers.utils.parseBytes32String(await ballotContract.winnerName())
+      ).to.be.eq(PROPOSALS[0]);
     });
   });
 
   describe("When someone interact with the winnerName function after one vote is cast for the first proposal", function () {
-    // TODO
-    xit("should return name of proposal 0", async () => {
-      throw Error("Not implemented");
+    beforeEach(async () => {
+      await ballotContract
+        .giveRightToVote(accounts[1].address)
+        .then((tx) => tx.wait());
+    });
+    it("Should return name of proposal 0", async () => {
+      await ballotContract.connect(accounts[1]).vote(0);
+      expect(
+        ethers.utils.parseBytes32String(await ballotContract.winnerName())
+      ).to.be.eq(PROPOSALS[0]);
     });
   });
 
   describe("When someone interact with the winningProposal function and winnerName after 5 random votes are cast for the proposals", function () {
-    // TODO
-    xit("should return the name of the winner proposal", async () => {
-      throw Error("Not implemented");
+    beforeEach(async () => {
+      let count = 1;
+      while (count < 6) {
+        await ballotContract
+          .giveRightToVote(accounts[count].address)
+          .then((tx) => tx.wait());
+        count++;
+      }
+    });
+    it("Should return the name of the winner proposal", async () => {
+      let count = 1;
+
+      while (count < 6) {
+        const randomProposal = Math.floor(Math.random() * PROPOSALS.length);
+        await ballotContract.connect(accounts[count]).vote(randomProposal);
+        count++;
+      }
+      const winningProposal = await ballotContract.winningProposal();
+      expect(
+        ethers.utils.parseBytes32String(await ballotContract.winnerName())
+      ).to.be.eq(PROPOSALS[Number(winningProposal)]);
     });
   });
 });
