@@ -1,44 +1,27 @@
-# Sample Hardhat Project
-
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
-
+# Lesson 5 - Vscode setup and code quality
 ## Environment setup
-
-- Tooling:
-  - [Node](https://nodejs.org/en/docs/guides/getting-started-guide/)
-  - [NPM](https://docs.npmjs.com/cli/v8/configuring-npm/install)
-  - [Yarn](https://yarnpkg.com/getting-started/install)
-  - [Git CLI](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
-  - [VS Code](https://code.visualstudio.com/docs/setup/setup-overview)
-- Services
-  - [infura](https://infura.io/)
-  - [alchemy](https://www.alchemy.com/)
-  - [etherscan](https://etherscan.io/register)
+* Tooling:
+  * [Node](https://nodejs.org/en/docs/guides/getting-started-guide/)
+  * [NPM](https://docs.npmjs.com/cli/v8/configuring-npm/install)
+  * [Yarn](https://yarnpkg.com/getting-started/install)
+  * [Git CLI](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
+  * [VS Code](https://code.visualstudio.com/docs/setup/setup-overview)
+* Services
+  * [infura](https://infura.io/)
+  * [alchemy](https://www.alchemy.com/)
+  * [etherscan](https://etherscan.io/register)
 
 ## Programming setup
-
-- Reference repository
-- NPM and Yarn
-- VS Code
-- VS Code plugins
-- source control
-- unit tests
-- scripts
-- Testing passing
-- Breaking tests
-
+* Reference repository
+* NPM and Yarn
+* VS Code
+* VS Code plugins
+* source control
+* unit tests
+* scripts
+* Testing passing
+* Breaking tests
 ### References
-
 https://github.com/OpenZeppelin/openzeppelin-contracts
 
 https://git-scm.com/book/en/v2/Getting-Started-The-Command-Line
@@ -50,15 +33,12 @@ https://yarnpkg.com/getting-started/usage
 https://code.visualstudio.com/docs
 
 ### Instructions
-
 ```
 git clone https://github.com/OpenZeppelin/openzeppelin-contracts.git
 cd .\openzeppelin-contracts\
 yarn install
 ```
-
 ### Output example
-
 ```
 yarn compile
 ...
@@ -67,9 +47,7 @@ $ hardhat compile
 Compiled 267 Solidity files successfully
 Done in 18.79s.
 ```
-
 ### Package.json scripts
-
 <pre><code>  "scripts": {
     "compile": "hardhat compile",
     "coverage": "env COVERAGE=true hardhat coverage",
@@ -91,9 +69,7 @@ Done in 18.79s.
     "test:inheritance": "node scripts/inheritanceOrdering artifacts/build-info/*",
     "gas-report": "env ENABLE_GAS_REPORT=true npm run test"
   },</code></pre>
-
 ### Test example
-
 ```
 yarn test .\test\token\ERC20\ERC20.test.js
 ...
@@ -102,19 +78,15 @@ $ hardhat test .\test\token\ERC20\ERC20.test.js
   76 passing (5s)
 Done in 8.39s.
 ```
-
 ### Breaking change
-
 ```
 code .\contracts\token\ERC20\ERC20.sol
 ```
-
 <pre><code>
     function decimals() public view virtual override returns (uint8) {
         return 42;
     }
 </code></pre>
-
 ```
 yarn test .\test\token\ERC20\ERC20.test.js
 ...
@@ -131,35 +103,27 @@ Compiled 28 Solidity files successfully
       -42
       +18
 ```
-
 ## Quality of code
-
-- Composability
-- Upgradeability
-- Maintainability and readability
-- Managing work flow and progress
-- Reaching peace of mind
-
+* Composability
+* Upgradeability
+* Maintainability and readability
+* Managing work flow and progress
+* Reaching peace of mind
 ## Hardhat setup
-
-- Creating a base repository
-- Setup hardhat with typescript
-- Configure VS Code
-- Hardhat scripts and tasks
-- VS Code extensions recommended
-
+* Creating a base repository
+* Setup hardhat with typescript
+* Configure VS Code
+* Hardhat scripts and tasks
+* VS Code extensions recommended
 ### References
-
-https://hardhat.org/getting-started/
+https://hardhat.org/getting-started/    
 
 https://hardhat.org/guides/typescript.html
 
 https://hardhat.org/guides/vscode-tests.html
 
 ### Steps
-
-- Creating a new project named `project`:
-
+* Creating a new project named `project`:
 ```// Exit your working folder:
 cd ..
 // Alternativelly you could pick a directory in another place, like "cd ~/desktop"
@@ -171,8 +135,7 @@ mkdir project
 cd project
 ```
 
-- Starting a new project using Yarn Berry:
-
+* Starting a new project using Yarn Berry:
 ```
 yarn init -2
     ...
@@ -186,9 +149,7 @@ yarn add --dev [list of suggested dev dependencies above]
 yarn add mocha --dev
 code .
 ```
-
 ### Recommended extensions
-
 [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph)
 
 [Mocha Test Explorer](https://marketplace.visualstudio.com/items?itemName=hbenl.vscode-mocha-test-adapter)
@@ -196,9 +157,7 @@ code .
 [Solidity](https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity)
 
 ### Environment setup
-
 _.mocharc.json_ file:
-
 <pre><code>{
   "require": "hardhat/register",
   "timeout": 40000,
@@ -216,9 +175,7 @@ yarn dlx @yarnpkg/sdks vscode
 // Choose "Select TypeScript Version"
 // Pick "Use Workspace Version"
 </code></pre>
-
 _hardhat.config.ts_ file:
-
 <pre><code>{
 const config: HardhatUserConfig = {
 ...
@@ -227,16 +184,13 @@ const config: HardhatUserConfig = {
   }
 }
 </code></pre>
-
 _tsconfig.json_ file:
-
 <pre><code>
 ...
-  "include": ["./scripts", "./tests", "./typechain"],
+  "include": ["./scripts", "./tests", "./typechain-types"],
   "files": ["./hardhat.config.ts"],
 ...
 </code></pre>
-
 Create env file in root project folder
 
 _.env_ file:
@@ -257,14 +211,12 @@ code .env
 ```
 
 Test it out:
-
 ```
- yarn hardhat compile
- yarn hardhat test
+ yarn hardhat compile 
+ yarn hardhat test 
 ```
 
 Accounts task:
-
 ```
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
@@ -276,24 +228,19 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 ```
 
 Test it out:
-
 ```
- yarn hardhat accounts
+ yarn hardhat accounts 
 ```
-
 ## Coding in VS Code
-
-- Syntax for typescript scripts
-- How the project operates
-- Writing a test file
-- Using Ethers.js library
-- Using Hardhat toolbox
-- Using Typechain library
-- Testing syntax
-- Running a test file
-
+* Syntax for typescript scripts
+* How the project operates
+* Writing a test file
+* Using Ethers.js library
+* Using Hardhat toolbox
+* Using Typechain library
+* Testing syntax
+* Running a test file
 ### References
-
 https://docs.ethers.io/v5/
 
 https://mochajs.org/
@@ -305,7 +252,6 @@ https://www.chaijs.com/guide/
 https://github.com/dethcrypto/TypeChain
 
 ### Clearing template files
-
 ```
 rm .\contracts\*
 rm .\scripts\*
