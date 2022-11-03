@@ -150,21 +150,22 @@ describe("Ballot", () => {
   });
 
   describe("When the an attacker interact with the vote function in the contract", function () {
-    // TODO
-    xit("Should revert", async () => {
-      throw Error("Not implemented");
+    it("Should revert", async () => {
+      await expect(
+        ballotContract.connect(accounts[1]).vote(1)
+      ).to.be.revertedWith("Has no right to vote");
     });
   });
 
   describe("When the an attacker interact with the delegate function in the contract", function () {
-    // TODO
-    xit("Should revert", async () => {
-      throw Error("Not implemented");
+    it("Should revert", async () => {
+      await expect(
+        ballotContract.connect(accounts[1]).delegate(accounts[2].address)
+      ).to.be.reverted;
     });
   });
 
   describe("When someone interact with the winningProposal function before any votes are cast", function () {
-    // TODO
     it("Should return 0", async () => {
       expect(await ballotContract.winningProposal()).to.be.eq(0);
     });
