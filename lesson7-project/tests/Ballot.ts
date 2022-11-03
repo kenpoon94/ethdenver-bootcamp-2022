@@ -64,13 +64,12 @@ describe("Ballot", () => {
           ballotContract
             .connect(accounts[0])
             .giveRightToVote(accounts[1].address)
-        ).to.be.reverted;
+        ).to.be.revertedWith("The voter already voted.");
       });
       it("Can not give right to vote for someone that has already voting rights", async function () {
         const selectedVoter = accounts[1].address;
-        await expect(
-          ballotContract.giveRightToVote(selectedVoter)
-        ).to.be.revertedWithoutReason();
+        await expect(ballotContract.giveRightToVote(selectedVoter)).to.be
+          .reverted;
       });
     });
   });
@@ -88,14 +87,16 @@ describe("Ballot", () => {
     });
 
     it("Can not register the vote because no voting rights", async () => {
-      await expect(ballotContract.connect(accounts[2]).vote(1)).to.be.reverted;
-      // to.be.revertedWith("Has no right to vote")
+      await expect(
+        ballotContract.connect(accounts[2]).vote(1)
+      ).to.be.revertedWith("Has no right to vote");
     });
 
     it("Can not register the vote because already voted", async () => {
       await ballotContract.connect(accounts[1]).vote(1);
-      await expect(ballotContract.connect(accounts[1]).vote(2)).to.be.reverted;
-      // to.be.revertedWith("Already voted.")
+      await expect(
+        ballotContract.connect(accounts[1]).vote(2)
+      ).to.be.revertedWith("Already voted.");
     });
   });
 
@@ -125,19 +126,18 @@ describe("Ballot", () => {
         ).to.be.eq(2);
       });
     });
-    // TODO
 
     it("Cannot delegate because already voted", async () => {
       await ballotContract.connect(accounts[1]).vote(1);
       await expect(
         ballotContract.connect(accounts[1]).delegate(accounts[2].address)
-      ).to.be.reverted;
+      ).to.be.revertedWith("You already voted.");
     });
 
     it("Cannot self-delegate", async () => {
       await expect(
         ballotContract.connect(accounts[1]).delegate(accounts[1].address)
-      ).to.be.reverted;
+      ).to.be.revertedWith("Self-delegation is disallowed.");
     });
   });
 
@@ -145,7 +145,7 @@ describe("Ballot", () => {
     it("Should revert", async () => {
       await expect(
         ballotContract.connect(accounts[1]).giveRightToVote(accounts[2].address)
-      ).to.be.reverted;
+      ).to.be.revertedWith("Only chairperson can give right to vote.");
     });
   });
 
