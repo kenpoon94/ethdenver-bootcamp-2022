@@ -52,14 +52,19 @@ describe("Ballot", () => {
           .giveRightToVote(selectedVoter)
           .then((tx) => tx.wait());
       });
+
       it("Gives right to vote for another address", async function () {
         const acc1Voter = await ballotContract.voters(accounts[1].address);
         expect(acc1Voter.weight).to.be.eq(1);
       });
+
       it("Can not give right to vote for someone that has voted", async function () {
-        // TODO:
-        // How to trigger vote() by a different account
-        throw Error("Not implemented");
+        await ballotContract.connect(accounts[1]).vote(1);
+        await expect(
+          ballotContract
+            .connect(accounts[0])
+            .giveRightToVote(accounts[1].address)
+        ).to.be.reverted;
       });
       it("Can not give right to vote for someone that has already voting rights", async function () {
         const selectedVoter = accounts[1].address;
