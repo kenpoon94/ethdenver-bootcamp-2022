@@ -101,21 +101,28 @@ describe("Ballot", () => {
 
   describe("When the voter interact with the delegate function in the contract", function () {
     beforeEach(async () => {
-      const selectedVoter = accounts[1].address;
       await ballotContract
-        .giveRightToVote(selectedVoter)
+        .giveRightToVote(accounts[1].address)
+        .then((tx) => tx.wait());
+      await ballotContract
+        .giveRightToVote(accounts[2].address)
         .then((tx) => tx.wait());
     });
     describe("Delegate to voter", () => {
-      xit("Delegating to voter who has already voted", async () => {
-        // await ballotContract.connect(accounts[1]).delegate(accounts[2].address);
-        // delegated voter voted already
-        // del
+      it("Delegating to voter who has already voted", async () => {
+        await ballotContract.connect(accounts[2]).vote(1);
+        expect((await ballotContract.proposals(1)).voteCount).to.be.eq(1);
+        await ballotContract.connect(accounts[1]).delegate(accounts[2].address);
+        expect((await ballotContract.proposals(1)).voteCount).to.be.eq(2);
       });
-      xit("Delegating to voter who has not voted", async () => {
-        // await ballotContract.connect(accounts[1]).delegate(accounts[2].address);
-        // delegated voter voted already
-        // del
+
+      it("Delegating to voter who has not voted", async () => {
+        await ballotContract.connect(accounts[1]).delegate(accounts[2].address);
+        expect((await ballotContract.voters(accounts[1].address)).voted).to.be
+          .true;
+        expect(
+          (await ballotContract.voters(accounts[2].address)).weight
+        ).to.be.eq(2);
       });
     });
     // TODO
