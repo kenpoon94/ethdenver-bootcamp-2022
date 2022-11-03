@@ -74,4 +74,119 @@ describe("Ballot", () => {
       });
     });
   });
+  describe("When the voter interact with the vote function in the contract", function () {
+    beforeEach(async () => {
+      const selectedVoter = accounts[1].address;
+      await ballotContract
+        .giveRightToVote(selectedVoter)
+        .then((tx) => tx.wait());
+    });
+
+    it("Should register the vote", async () => {
+      await ballotContract.connect(accounts[1]).vote(1);
+      expect((await ballotContract.proposals(1)).voteCount).to.be.eq(1);
+    });
+
+    it("Can not register the vote because no voting rights", async () => {
+      await expect(ballotContract.connect(accounts[2]).vote(1)).to.be.reverted;
+      // to.be.revertedWith("Has no right to vote")
+    });
+
+    it("Can not register the vote because already voted", async () => {
+      await ballotContract.connect(accounts[1]).vote(1);
+      await expect(ballotContract.connect(accounts[1]).vote(2)).to.be.reverted;
+      // to.be.revertedWith("Already voted.")
+    });
+  });
+
+  describe("When the voter interact with the delegate function in the contract", function () {
+    beforeEach(async () => {
+      const selectedVoter = accounts[1].address;
+      await ballotContract
+        .giveRightToVote(selectedVoter)
+        .then((tx) => tx.wait());
+    });
+    describe("Delegate to voter", () => {
+      xit("Delegating to voter who has already voted", async () => {
+        // await ballotContract.connect(accounts[1]).delegate(accounts[2].address);
+        // delegated voter voted already
+        // del
+      });
+      xit("Delegating to voter who has not voted", async () => {
+        // await ballotContract.connect(accounts[1]).delegate(accounts[2].address);
+        // delegated voter voted already
+        // del
+      });
+    });
+    // TODO
+
+    it("Cannot delegate because already voted", async () => {
+      await ballotContract.connect(accounts[1]).vote(1);
+      await expect(
+        ballotContract.connect(accounts[1]).delegate(accounts[2].address)
+      ).to.be.reverted;
+    });
+
+    it("Cannot self-delegate", async () => {
+      await expect(
+        ballotContract.connect(accounts[1]).delegate(accounts[1].address)
+      ).to.be.reverted;
+    });
+  });
+
+  describe("When the an attacker interact with the giveRightToVote function in the contract", function () {
+    // TODO
+    xit("should revert", async () => {
+      throw Error("Not implemented");
+    });
+  });
+
+  describe("When the an attacker interact with the vote function in the contract", function () {
+    // TODO
+    xit("should revert", async () => {
+      throw Error("Not implemented");
+    });
+  });
+
+  describe("When the an attacker interact with the delegate function in the contract", function () {
+    // TODO
+    xit("should revert", async () => {
+      throw Error("Not implemented");
+    });
+  });
+
+  describe("When someone interact with the winningProposal function before any votes are cast", function () {
+    // TODO
+    xit("should return 0", async () => {
+      throw Error("Not implemented");
+    });
+  });
+
+  describe("When someone interact with the winningProposal function after one vote is cast for the first proposal", function () {
+    // TODO
+    xit("should return 0", async () => {
+      throw Error("Not implemented");
+    });
+  });
+
+  describe("When someone interact with the winnerName function before any votes are cast", function () {
+    // TODO
+    xit("should return name of proposal 0", async () => {
+      throw Error("Not implemented");
+    });
+  });
+
+  describe("When someone interact with the winnerName function after one vote is cast for the first proposal", function () {
+    // TODO
+    xit("should return name of proposal 0", async () => {
+      throw Error("Not implemented");
+    });
+  });
+
+  describe("When someone interact with the winningProposal function and winnerName after 5 random votes are cast for the proposals", function () {
+    // TODO
+    xit("should return the name of the winner proposal", async () => {
+      throw Error("Not implemented");
+    });
+  });
 });
