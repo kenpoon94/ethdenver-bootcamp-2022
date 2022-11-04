@@ -59,7 +59,10 @@ describe("Ballot", () => {
       });
 
       it("Can not give right to vote for someone that has voted", async function () {
-        await ballotContract.connect(accounts[1]).vote(1);
+        await ballotContract
+          .connect(accounts[1])
+          .vote(1)
+          .then((tx) => tx.wait());
         await expect(
           ballotContract
             .connect(accounts[0])
@@ -68,8 +71,9 @@ describe("Ballot", () => {
       });
       it("Can not give right to vote for someone that has already voting rights", async function () {
         const selectedVoter = accounts[1].address;
-        await expect(ballotContract.giveRightToVote(selectedVoter)).to.be
-          .reverted;
+        await expect(
+          ballotContract.giveRightToVote(selectedVoter).then((tx) => tx.wait())
+        ).to.be.reverted;
       });
     });
   });
