@@ -9,14 +9,14 @@ export const convertToBytes32Array = (array: string[]) => {
   return bytes32Array;
 };
 
-export const getSigner = () => {
+export const getSigner = (accountPath = process.env.ACCOUNT_PATH) => {
   const provider = ethers.getDefaultProvider("goerli", {
     etherscan: process.env.ETHERSCAN_API_KEY,
     alchemy: process.env.ALCHEMY_API_KEY,
   });
   const wallet = ethers.Wallet.fromMnemonic(
     process.env.MNEMONIC ?? "",
-    process.env.ACCOUNT_PATH ?? ""
+    accountPath ?? ""
   );
   return wallet.connect(provider);
 };
