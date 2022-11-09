@@ -1,109 +1,124 @@
-# Lesson 9 - MyERC20.sol and MyERC721.sol
+# Lesson 10 - TokenSale.sol
 
-## Quickstart with OpenZeppelin wizard
+## Challenge explanation
 
-- Overview about Ethereum Improvement Proposals (EIPs)
-- Overview about Application-level standards and conventions (ERCs)
-- Explain about OpenZeppelin Contracts library
-- (Review) Objects in smart contracts
-- Inheritance overview
-- Overview about ERC20
-- Overview about ERC721
-- Using OpenZeppelin wizard
+- Application Features
+  - Buy a ERC20 with ETH for a fixed ratio
+  - Withdraw ETH by burning the ERC20 tokens
+  - Buy (Mint) a new ERC721 for a configured price
+  - Update owner account whenever a NFT is sold
+  - Allow owner to withdraw from account
+    - Only half of sales value is available for withdraw
+  - Allow users to burn their NFTs to recover half of the purchase price
+- Architecture overview
+- Contract external calls
+
+## Tests layout
+
+- (Review) TDD methodology
+- Best practices on external calls
+- Dealing with decimals and divisions
+  - Shifting decimal points
+  - Underflow
+  - Overflow
+- (Review) Test syntax
+- (Review) Positive and negative tests
+- Integration tests
 
 ### References
 
-https://eips.ethereum.org/
+https://consensys.github.io/smart-contract-best-practices/development-recommendations/general/external-calls/
 
-https://eips.ethereum.org/erc
+https://docs.soliditylang.org/en/latest/types.html#division
 
-https://docs.openzeppelin.com/contracts/4.x/
+https://github.com/wissalHaji/solidity-coding-advices/blob/master/best-practices/rounding-errors-with-division.md
 
-https://docs.openzeppelin.com/contracts/4.x/erc20
+### Test code reference
 
-https://docs.openzeppelin.com/contracts/4.x/erc721
+<pre><code>
 
-https://docs.soliditylang.org/en/latest/contracts.html#inheritance
+import { expect } from "chai";
+import { ethers } from "hardhat";
 
-https://solidity-by-example.org/inheritance/
+describe("NFT Shop", async () => {
+  beforeEach(async () => {});
 
-https://docs.openzeppelin.com/contracts/4.x/wizard
+  describe("When the Shop contract is deployed", async () => {
+    it("defines the ratio as provided in parameters", async () => {
+      throw new Error("Not implemented");
+    });
 
-### Plain ERC20 Code reference
+    it("uses a valid ERC20 as payment token", async () => {
+      throw new Error("Not implemented");
+    });
+  });
 
-<pre><code>// SPDX-License-Identifier: MIT
-pragma solidity >=0.7.0 <0.9.0;
+  describe("When a user purchase an ERC20 from the Token contract", async () => {
+    beforeEach(async () => {});
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+    it("charges the correct amount of ETH", async () => {
+      throw new Error("Not implemented");
+    });
 
-contract MyToken is ERC20 {
-    constructor() ERC20("MyToken", "MTK") {}
-}
+    it("gives the correct amount of tokens", async () => {
+      throw new Error("Not implemented");
+    });
+  });
+
+  describe("When a user burns an ERC20 at the Token contract", async () => {
+    it("gives the correct amount of ETH", async () => {
+      throw new Error("Not implemented");
+    });
+
+    it("burns the correct amount of tokens", async () => {
+      throw new Error("Not implemented");
+    });
+  });
+
+  describe("When a user purchase a NFT from the Shop contract", async () => {
+    it("charges the correct amount of ETH", async () => {
+      throw new Error("Not implemented");
+    });
+
+    it("updates the owner account correctly", async () => {
+      throw new Error("Not implemented");
+    });
+
+    it("update the pool account correctly", async () => {
+      throw new Error("Not implemented");
+    });
+
+    it("favors the pool with the rounding", async () => {
+      throw new Error("Not implemented");
+    });
+  });
+
+  describe("When a user burns their NFT at the Shop contract", async () => {
+    it("gives the correct amount of ERC20 tokens", async () => {
+      throw new Error("Not implemented");
+    });
+    it("updates the pool correctly", async () => {
+      throw new Error("Not implemented");
+    });
+  });
+
+  describe("When the owner withdraw from the Shop contract", async () => {
+    it("recovers the right amount of ERC20 tokens", async () => {
+      throw new Error("Not implemented");
+    });
+
+    it("updates the owner account correctly", async () => {
+      throw new Error("Not implemented");
+    });
+  });
+});
 </code></pre>
 
-### Plain ERC721 Code reference
-
-<pre><code>// SPDX-License-Identifier: MIT
-pragma solidity >=0.7.0 <0.9.0;
-
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-
-contract MyToken is ERC721 {
-    constructor() ERC721("MyToken", "MTK") {}
-}
-</code></pre>
-
-## Contract structure
-
-- Syntax about inheritance
-- Overview about OpenZeppelin features for ERC20 and ERC721
-- Overview about OpenZeppelin features for Access Control
-- Overview about OpenZeppelin utilities and components
-- Adding minting feature
-- Adding RBAC feature
-
 ### References
 
-https://www.npmjs.com/package/@openzeppelin/contracts
+https://fravoll.github.io/solidity-patterns/
 
-https://docs.openzeppelin.com/contracts/4.x/extending-contracts
-
-https://docs.openzeppelin.com/contracts/4.x/access-control
-
-## Operating the contracts with scripts
-
-- (Review) Script operation
-- (Review) Accounts and funding
-- (Review) Providers
-- (Review) Async operations
-- (Review) Running scripts on test environment
-- (Review) Contract factory and json imports
-- (Review) Transaction receipts and async complexities when running onchain
-
-## Events with solidity
-
-- Event syntax
-- Event storage
-- Event indexing
-- Topics and filters
-- Transaction structure
-- State changes with events
-
-### References
-
-https://docs.soliditylang.org/en/latest/contracts.html#events
-
-https://dev.to/hideckies/ethers-js-cheat-sheet-1h5j
-
-## Watching for events in tests
-
-- Event syntax with Hardhat Chai Matchers
-- Triggering an event
-- Checking arguments
-
-### References
-
-https://hardhat.org/hardhat-chai-matchers/docs/overview#events
+https://dev.to/jamiescript/design-patterns-in-solidity-1i28
 
 # Homework
 
