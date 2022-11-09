@@ -10,17 +10,15 @@ interface IMyERC20 {
 
 contract TokenSale {
     uint256 public ratio;
-    address public paymentToken;
+    IMyERC20 public paymentToken;
 
     constructor(uint256 _ratio, address _paymentToken) {
         ratio = _ratio;
         paymentToken = IMyERC20(_paymentToken);
-
     }
-
 
     function buyTokens() external payable {
         uint256 amountToBeMinted = msg.value / ratio;
-        paymentToken.mint(msg.sender, uint256 amountToBeMinted);
+        paymentToken.mint(msg.sender, amountToBeMinted);
     }
 }
