@@ -8,15 +8,12 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 contract MyERC721 is ERC721, ERC721Burnable, AccessControl {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    constructor() ERC721("MyToken", "EYE") {
+    constructor() ERC721("MyERC721", "MTK") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
     }
 
-    function safeMint(address to, uint256 tokenId)
-        public
-        onlyRole(MINTER_ROLE)
-    {
+    function safeMint(address to, uint256 tokenId) public onlyRole(MINTER_ROLE) {
         _safeMint(to, tokenId);
     }
 
