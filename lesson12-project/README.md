@@ -1,126 +1,81 @@
-# Lesson 10 - TokenSale.sol
+# Lesson 12 - Tokenized Votes
 
-## Challenge explanation
+## The ERC20Votes ERC20 extension
 
-- Application Features
-  - Buy a ERC20 with ETH for a fixed ratio
-  - Withdraw ETH by burning the ERC20 tokens
-  - Buy (Mint) a new ERC721 for a configured price
-  - Update owner account whenever a NFT is sold
-  - Allow owner to withdraw from account
-    - Only half of sales value is available for withdraw
-  - Allow users to burn their NFTs to recover half of the purchase price
-- Architecture overview
-- Contract external calls
-
-## Tests layout
-
-- (Review) TDD methodology
-- Best practices on external calls
-- Dealing with decimals and divisions
-  - Shifting decimal points
-  - Underflow
-  - Overflow
-- (Review) Test syntax
-- (Review) Positive and negative tests
-- Integration tests
+- ERC20Votes properties
+- Snapshots
+- Creating snapshots when supply changes
+- Using snapshots
+- Self delegation
+- Contract overall operation
 
 ### References
 
-https://consensys.github.io/smart-contract-best-practices/development-recommendations/general/external-calls/
+https://docs.openzeppelin.com/contracts/4.x/api/token/erc20#ERC20Votes
 
-https://docs.soliditylang.org/en/latest/types.html#division
+https://docs.openzeppelin.com/contracts/4.x/api/token/erc20#ERC20Snapshot
 
-https://github.com/wissalHaji/solidity-coding-advices/blob/master/best-practices/rounding-errors-with-division.md
+https://docs.openzeppelin.com/contracts/4.x/api/token/erc20#ERC20Permit
 
-### Test code reference
+<pre><code>// SPDX-License-Identifier: MIT
+pragma solidity >=0.7.0 <0.9.0;
 
-<pre><code>
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 
-import { expect } from "chai";
-import { ethers } from "hardhat";
+contract MyToken is ERC20, AccessControl, ERC20Permit, ERC20Votes {
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-describe("NFT Shop", async () => {
-  beforeEach(async () => {});
+    constructor() ERC20("MyToken", "MTK") ERC20Permit("MyToken") {
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(MINTER_ROLE, msg.sender);
+    }
 
-  describe("When the Shop contract is deployed", async () => {
-    it("defines the ratio as provided in parameters", async () => {
-      throw new Error("Not implemented");
-    });
+    function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
+        _mint(to, amount);
+    }
 
-    it("uses a valid ERC20 as payment token", async () => {
-      throw new Error("Not implemented");
-    });
-  });
+    // The following functions are overrides required by Solidity.
 
-  describe("When a user purchase an ERC20 from the Token contract", async () => {
-    beforeEach(async () => {});
+    function _afterTokenTransfer(address from, address to, uint256 amount)
+        internal
+        override(ERC20, ERC20Votes)
+    {
+        super._afterTokenTransfer(from, to, amount);
+    }
 
-    it("charges the correct amount of ETH", async () => {
-      throw new Error("Not implemented");
-    });
+    function _mint(address to, uint256 amount)
+        internal
+        override(ERC20, ERC20Votes)
+    {
+        super._mint(to, amount);
+    }
 
-    it("gives the correct amount of tokens", async () => {
-      throw new Error("Not implemented");
-    });
-  });
+    function _burn(address account, uint256 amount)
+        internal
+        override(ERC20, ERC20Votes)
+    {
+        super._burn(account, amount);
+    }
+}</code></pre>
 
-  describe("When a user burns an ERC20 at the Token contract", async () => {
-    it("gives the correct amount of ETH", async () => {
-      throw new Error("Not implemented");
-    });
+## ERC20Votes and Ballot.sol
 
-    it("burns the correct amount of tokens", async () => {
-      throw new Error("Not implemented");
-    });
-  });
-
-  describe("When a user purchase a NFT from the Shop contract", async () => {
-    it("charges the correct amount of ETH", async () => {
-      throw new Error("Not implemented");
-    });
-
-    it("updates the owner account correctly", async () => {
-      throw new Error("Not implemented");
-    });
-
-    it("update the pool account correctly", async () => {
-      throw new Error("Not implemented");
-    });
-
-    it("favors the pool with the rounding", async () => {
-      throw new Error("Not implemented");
-    });
-  });
-
-  describe("When a user burns their NFT at the Shop contract", async () => {
-    it("gives the correct amount of ERC20 tokens", async () => {
-      throw new Error("Not implemented");
-    });
-    it("updates the pool correctly", async () => {
-      throw new Error("Not implemented");
-    });
-  });
-
-  describe("When the owner withdraw from the Shop contract", async () => {
-    it("recovers the right amount of ERC20 tokens", async () => {
-      throw new Error("Not implemented");
-    });
-
-    it("updates the owner account correctly", async () => {
-      throw new Error("Not implemented");
-    });
-  });
-});
-</code></pre>
-
-### References
-
-https://fravoll.github.io/solidity-patterns/
-
-https://dev.to/jamiescript/design-patterns-in-solidity-1i28
+- (Review) Testing features with scripts
+- Mapping scenarios
+- Contracts structure
 
 # Homework
 
 - Create Github Issues with your questions about this lesson
 - Read the references
+
+# Weekend project
+
+- Form groups of 3 to 5 students
+- Complete the contracts together
+- Develop and run scripts for “TokenizedBallot.sol” within your group to give voting tokens, delegating voting power, casting votes, checking vote power and querying results
+- Write a report with each function execution and the transaction hash, if successful, or the revert reason, if failed
+- Share your code in a github repo in the submission form
