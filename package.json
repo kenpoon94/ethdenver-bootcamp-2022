@@ -1,0 +1,24 @@
+{
+  "name": "ethdenver-bootcamp-2022",
+  "version": "1.0.0",
+  "description": "## Pre-Study 1. **Ethereum Book - Chapters 1 & 2** [https://github.com/ethereumbook/ethereumbook](https://github.com/ethereumbook/ethereumbook) 2. **Asymmetric Encryption short explainer** [https://www.youtube.com/watch?v=AQDCe585Lnc](https://www.youtube.com/watch?v=AQDCe585Lnc) 3. **Fat Protocols by USV** [https://www.usv.com/writing/2016/08/fat-protocols/](https://www.usv.com/writing/2016/08/fat-protocols/) 4. **Ethereum Whitepaper** [https://ethereum.org/en/whitepaper/](https://ethereum.org/en/whitepaper/)",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "hardhat": "^2.12.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kenpoon94/ethdenver-bootcamp-2022.git"
+  },
+  "author": "Ken",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kenpoon94/ethdenver-bootcamp-2022/issues"
+  },
+  "homepage": "https://github.com/kenpoon94/ethdenver-bootcamp-2022#readme"
+}

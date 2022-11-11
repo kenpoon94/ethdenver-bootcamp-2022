@@ -1,5 +1,5 @@
 import { Ballot__factory } from "../typechain-types";
-import { convertToBytes32Array, getSigner } from "../utils/General";
+import { convertToBytes32Array, getSigner } from "../../utils/General";
 import * as dotenv from "dotenv";
 dotenv.config();
 
