@@ -1,14 +1,14 @@
 import { Ballot__factory } from "../typechain-types";
 import * as dotenv from "dotenv";
-import { getSigner } from "../utils/General";
-dotenv.config();
+import { getSigner } from "../../utils/General";
+dotenv.config({ path: "../.env" });
 
 async function main() {
   const contractAddress = process.argv[2];
   const targetAddress = process.argv[3];
   console.log(`Delegate vote to ${targetAddress}`);
 
-  const signer = getSigner(process.env.SECONDARY_ACCOUNT_PATH);
+  const signer = getSigner(process.env.META_2);
   const balance = await signer.getBalance();
 
   if (balance.eq(0))

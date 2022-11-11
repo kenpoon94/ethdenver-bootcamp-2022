@@ -1,7 +1,7 @@
 import { Ballot__factory } from "../typechain-types";
 import * as dotenv from "dotenv";
-import { getSigner } from "../utils/General";
-dotenv.config();
+import { getSigner } from "../../utils/General";
+dotenv.config({ path: "../.env" });
 
 async function main() {
   const contractAddress = process.argv[2];

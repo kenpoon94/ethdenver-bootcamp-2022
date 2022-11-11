@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 import { Ballot } from "../typechain-types";
-import { convertToBytes32Array } from "../utils/General";
+import { convertToBytes32Array } from "../../utils/General";
 
 const PROPOSALS = ["Vanilla", "Chocolate", "Peppermint"];
 

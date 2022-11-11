@@ -1,8 +1,8 @@
 import { Ballot__factory } from "../typechain-types";
 import * as dotenv from "dotenv";
-import { getSigner } from "../utils/General";
+import { getSigner } from "../../utils/General";
 import { ethers } from "hardhat";
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log("Retrieving winning proposal");
