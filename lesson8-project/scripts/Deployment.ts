@@ -1,31 +1,32 @@
 import { Ballot__factory } from "../typechain-types";
-import { convertToBytes32Array, getSigner } from "../../utils/General";
+import {
+  convertToBytes32Array,
+  getSigner,
+  isBalanceZero,
+} from "../../utils/General";
 import * as dotenv from "dotenv";
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 const PROPOSALS = process.argv.slice(2);
 
 async function main() {
-  console.log("Deploying Ballot contract");
+  const signer = getSigner();
+  if (await isBalanceZero(signer))
+    throw new Error("Not enough balance to deploy contract");
+  console.log(`${signer.address} is deploying smart contract(s) `);
 
   console.log("Proposals: ");
   PROPOSALS.forEach((element, index) => {
     console.log(`Proposal N. ${index + 1}: ${element}`);
   });
 
-  const signer = getSigner();
-  const balance = await signer.getBalance();
-
-  if (balance.eq(0)) throw new Error("Not enough balance to deploy contract");
-  const ballotContractFactory = new Ballot__factory(signer);
-  const ballotContract = await ballotContractFactory.deploy(
+  const contractFactory = new Ballot__factory(signer);
+  const contract = await contractFactory.deploy(
     convertToBytes32Array(PROPOSALS)
   );
-  await ballotContract.deployed();
+  await contract.deployed();
 
-  console.log(
-    `The ballot smart contract was deployed at ${ballotContract.address}`
-  );
+  console.log(`The ballot smart contract was deployed at ${contract.address}`);
 }
 
 main().catch((error) => {
