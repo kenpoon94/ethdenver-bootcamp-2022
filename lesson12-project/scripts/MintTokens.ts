@@ -1,4 +1,4 @@
-import { getSigner, isBalanceZero } from "../../utils/General";
+import { canDeploy, getSigner } from "../../utils/General";
 import { MyToken__factory } from "../typechain-types";
 import * as dotenv from "dotenv";
 import { ethers } from "hardhat";
@@ -30,8 +30,7 @@ async function main() {
     ethers.getContractFactory("MyToken"),
   ]);
 
-  if (await isBalanceZero(signer))
-    throw new Error("Not enough balance to deploy");
+  await canDeploy(signer);
   console.log(`${signer.address} is minting ${mintAmount} tokens`);
 
   const tokenContract = tokenContractFactory.attach(tokenContractAddress);

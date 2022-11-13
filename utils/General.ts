@@ -21,10 +21,15 @@ export const getSigner = (accountPath = process.env.META_1) => {
   return wallet.connect(provider);
 };
 
-export const isBalanceZero = async (signer: any) => {
+const isBalanceZero = async (signer: any) => {
   const balance = await signer.getBalance();
   return balance === 0 ? true : false;
 };
+
+export async function canDeploy(signer: any) {
+  if (await isBalanceZero(signer))
+    throw new Error("Not enough balance to interact");
+}
 
 export async function mineBlocks(blockNumber: number) {
   while (blockNumber > 0) {

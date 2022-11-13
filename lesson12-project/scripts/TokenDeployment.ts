@@ -1,13 +1,11 @@
-import { getSigner, isBalanceZero } from "../../utils/General";
+import { canDeploy, getSigner } from "../../utils/General";
 import { MyToken__factory } from "../typechain-types";
 import * as dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 
 async function main() {
-
   const signer = getSigner();
-  if (await isBalanceZero(signer))
-    throw new Error("Not enough balance to deploy");
+  await canDeploy(signer);
   console.log(`${signer.address} is deploying TokenDeployment contract`);
 
   const contractFactory = new MyToken__factory(signer);
