@@ -79,3 +79,43 @@ contract MyToken is ERC20, AccessControl, ERC20Permit, ERC20Votes {
 - Develop and run scripts for “TokenizedBallot.sol” within your group to give voting tokens, delegating voting power, casting votes, checking vote power and querying results
 - Write a report with each function execution and the transaction hash, if successful, or the revert reason, if failed
 - Share your code in a github repo in the submission form
+
+<hr/>
+
+# Custom scripts
+
+## Check Voting Power
+
+<code>
+yarn ts-node --files .\scripts\CheckVotingPower.ts {tokenContractAddress}
+<code>
+
+## Check Account Balance
+
+<code>
+yarn hardhat run .\scripts\CheckAccountBalance.ts
+<code>
+
+## Check Winner
+
+<code>
+yarn ts-node --files .\scripts\CheckWinner.ts {tokenContractAddress}
+<code>
+
+## Delegate Votes
+
+<code>
+yarn ts-node --files .\scripts\Vote.ts {tokenContractAddress} {accNumber}  
+<code>
+
+## Mint Tokens
+
+<code>
+yarn ts-node --files .\scripts\MintTokens.ts {tokenContractAddress} {mintDestinationAddress} {mintAmount}
+<code>
+
+## Voting
+
+<code>
+yarn ts-node --files .\scripts\Vote.ts {tokenContractAddress} {tokenizedBallotContractAddress} {accNumber} {votingPower} {selectedProposal}
+<code>
