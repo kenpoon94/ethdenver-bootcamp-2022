@@ -1,4 +1,4 @@
-import { ethers } from "hardhat";
+const { ethers } = require("hardhat");
 import * as dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 
@@ -25,3 +25,10 @@ export const isBalanceZero = async (signer: any) => {
   const balance = await signer.getBalance();
   return balance === 0 ? true : false;
 };
+
+export async function mineBlocks(blockNumber: number) {
+  while (blockNumber > 0) {
+    blockNumber--;
+    await ethers.provider.send("evm_mine");
+  }
+}
