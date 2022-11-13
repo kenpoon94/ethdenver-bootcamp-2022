@@ -1,41 +1,50 @@
-import { sign } from "crypto";
 import {
+  canDeploy,
   convertToBytes32Array,
   getSigner,
-  isBalanceZero,
 } from "../../utils/General";
-import { MyToken__factory, TokenizedBallot__factory } from "../typechain-types";
+import { TokenizedBallot__factory } from "../typechain-types";
 import * as dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 
-const PROPOSALS = process.argv.slice(2);
+let blockNumber: number = 0;
+let proposals: string[];
+let tokenContractAddress: string;
+const args = process.argv.slice(2);
+if (typeof args[0] === "string") tokenContractAddress = args[0];
+if (typeof args[1] === "string") blockNumber = parseInt(args[1]);
+if (typeof args.slice(2) === "object") proposals = args.slice(2);
 
 async function main() {
-  const signer = getSigner();
-  if (await isBalanceZero(signer))
-    throw new Error("Not enough balance to deploy");
-  console.log(`${signer.address} is deploying smart contract(s) `);
-
+  if (!tokenContractAddress)
+    throw new Error(
+      "Unable to deploy contract due to missing token contract address"
+    );
+  if (blockNumber == 0)
+    throw new Error("Unable to deploy contract due to missing blockNumber");
+  if (proposals.length < 2)
+    throw new Error("Unable to deploy contract due to less than 2 proposals");
+  console.log(`Token Contract Address: ${tokenContractAddress}`);
+  console.log(`Block Number: ${blockNumber}`);
   console.log("Proposals: ");
-  PROPOSALS.forEach((element, index) => {
+  proposals.forEach((element, index) => {
     console.log(`Proposal N. ${index + 1}: ${element}`);
   });
 
-  // const contractFactory1 = new MyToken__factory(signer);
-  // const contract1 = await contractFactory1.deploy();
-  // await contract1.deployed();
-  // console.log(`The MyToken contract was deployed at ${contract1.address}`);
+  const signer = getSigner();
+  await canDeploy(signer);
+  console.log(`${signer.address} is deploying TokenizedBallot contract`);
 
-  // const contractFactory2 = new TokenizedBallot__factory(signer);
-  // const contract2 = await contractFactory2.deploy(
-  //   convertToBytes32Array(PROPOSALS),
-  //   contract1.address,
-  //   0 // NEED TO CHANGE
-  // );
-  // await contract2.deployed();
-  // console.log(
-  //   `The TokenizedBallot contract was deployed at ${contract2.address}`
-  // );
+  const contractFactory = new TokenizedBallot__factory(signer);
+  const contract = await contractFactory.deploy(
+    convertToBytes32Array(proposals),
+    tokenContractAddress,
+    blockNumber
+  );
+  await contract.deployed();
+  console.log(
+    `The TokenizedBallot contract was deployed at ${contract.address}`
+  );
 }
 main().catch((error) => {
   console.log(error);
