@@ -2,8 +2,6 @@ import { getSigner, isBalanceZero } from "../../utils/General";
 import { MyToken__factory } from "../typechain-types";
 import * as dotenv from "dotenv";
 import { ethers } from "hardhat";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { sign } from "crypto";
 dotenv.config({ path: "../.env" });
 
 const args = process.argv.slice(2);
