@@ -88,34 +88,34 @@ contract MyToken is ERC20, AccessControl, ERC20Permit, ERC20Votes {
 
 <code>
 yarn ts-node --files .\scripts\CheckVotingPower.ts {tokenContractAddress}
-<code>
+</code>
 
 ## Check Account Balance
 
 <code>
 yarn hardhat run .\scripts\CheckAccountBalance.ts
-<code>
+</code>
 
 ## Check Winner
 
 <code>
 yarn ts-node --files .\scripts\CheckWinner.ts {tokenContractAddress}
-<code>
+</code>
 
 ## Delegate Votes
 
 <code>
 yarn ts-node --files .\scripts\Vote.ts {tokenContractAddress} {accNumber}  
-<code>
+</code>
 
 ## Mint Tokens
 
 <code>
 yarn ts-node --files .\scripts\MintTokens.ts {tokenContractAddress} {mintDestinationAddress} {mintAmount}
-<code>
+</code>
 
 ## Voting
 
 <code>
 yarn ts-node --files .\scripts\Vote.ts {tokenContractAddress} {tokenizedBallotContractAddress} {accNumber} {votingPower} {selectedProposal}
-<code>
+</code>
