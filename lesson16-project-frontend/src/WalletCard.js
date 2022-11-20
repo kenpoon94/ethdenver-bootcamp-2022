@@ -35,13 +35,17 @@ const WalletCard = () => {
     await tokenContract
       .connect(account)
       .balanceOf(address)
-      .then((vp) => setTokenBalance(ethers.utils.formatEther(vp)));
+      .then((mtk) => {
+        if (mtk.isZero()) setTokenBalance(0);
+        else setTokenBalance(ethers.utils.formatEther(mtk));
+      });
 
     await tokenizedContract
       .connect(account)
       .votingPower(address)
       .then((vp) => {
-        setVotingPower(ethers.utils.formatEther(vp));
+        if (vp.isZero()) setVotingPower(0);
+        else setVotingPower(ethers.utils.formatEther(vp));
       });
   };
 
@@ -59,12 +63,35 @@ const WalletCard = () => {
           <h4 className="walletAddress">Address: {defaultAccount}</h4>
           <div className="balanceDisplay">
             <h3>goerliETH Amount: {userBalance}</h3>
-            <h3>MTK Amount: {tokenBalance}</h3>
-            <h3>Voting Power: {votingPower}</h3>
+            <TokenBalance tokenBalance={tokenBalance} />
+            <VotingPower votingPower={votingPower} />
           </div>
         </div>
       )}
       {errorMessage}
+    </div>
+  );
+};
+
+const TokenBalance = ({ tokenBalance }) => {
+  return (
+    <div>
+      <h3>MTK Amount: {tokenBalance}</h3>
+      {!tokenBalance && <button>Mint</button>}
+    </div>
+  );
+};
+
+const VotingPower = ({ votingPower }) => {
+  return (
+    <div>
+      <h3>Remain Voting Power: {votingPower}</h3>
+      {votingPower !== 0 && (
+        <div>
+          <input type="number" placeholder="Voting Power"></input>
+          <button>Vote</button>
+        </div>
+      )}
     </div>
   );
 };
