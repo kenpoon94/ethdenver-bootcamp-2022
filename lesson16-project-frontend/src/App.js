@@ -1,11 +1,11 @@
 import "./App.css";
-import WalletCard from "./WalletCard";
+import VotingDashboard from "./VotingDashboard";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header"></header>
-      <WalletCard />
+      <VotingDashboard />
     </div>
   );
 }
