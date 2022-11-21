@@ -9,11 +9,10 @@ async function bootstrap() {
     .setTitle('Blockchain API')
     .setDescription('An Etherjs API')
     .setVersion('1.0')
-    .addTag('etherjs')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
+  app.enableCors();
   await app.listen(3000);
 }
 bootstrap();
