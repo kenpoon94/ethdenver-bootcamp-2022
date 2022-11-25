@@ -13,7 +13,7 @@ contract Lottery is Ownable {
 
     uint256 public ownerPool;
     uint256 public prizePool;
-    mapping(address => uint256) prize;
+    mapping(address => uint256) public prize;
 
     bool public isBetOpen;
 
@@ -62,7 +62,7 @@ contract Lottery is Ownable {
 
     function closeLottery() external {
         require(closingTimestamp <= block.timestamp, "Too soon to close.");
-        require(betsOpen, "Bets are closed!");
+        require(isBetOpen, "Bets are closed!");
         if (_slots.length > 0) {
             uint256 winnerIndex = getRandomNumber() % _slots.length;
             address winner = _slots[winnerIndex];
@@ -87,8 +87,22 @@ contract Lottery is Ownable {
     }
 
     // Prize Withdraw
+    function prizeWithdraw(uint256 amount) public {
+        require(amount <= prize[msg.sender], "Not enough prize");
+        prize[msg.sender] -= amount;
+        paymentToken.transfer(msg.sender, amount);
+    }
 
     // Owner Withdraw
+    function ownerWithdraw(uint256 amount) public onlyOwner {
+        require(amount <= ownerPool, "Not enough collected fees");
+        ownerPool -= amount;
+        paymentToken.transfer(msg.sender, amount);
+    }
 
     // Return tokens
+    function burnTokens(uint256 amount) public {
+        paymentToken.burnTokens(msg.sender, amount);
+        payable(msg.sender).transfer(amount / purchaseRatio);
+    }
 }
