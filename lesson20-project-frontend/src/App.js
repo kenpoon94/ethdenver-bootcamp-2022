@@ -1,11 +1,11 @@
 import "./App.css";
-import VotingDashboard from "./VotingDashboard";
+import LotteryDashboard from "./LotteryDashboard";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header"></header>
-      <VotingDashboard />
+      <LotteryDashboard />
     </div>
   );
 }
